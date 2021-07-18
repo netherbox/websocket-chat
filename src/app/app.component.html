@@ -1,0 +1,5 @@
+<ng-container *ngIf="chatService.connected$ | async; else notConnected">
+  Ready to join...
+</ng-container>
+
+<ng-template #notConnected>Connecting...</ng-template>
