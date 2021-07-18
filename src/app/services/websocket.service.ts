@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { BehaviorSubject, fromEvent, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 
 export interface Command<T> {
   commandId: string;
