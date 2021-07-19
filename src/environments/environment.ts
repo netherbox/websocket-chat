@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  server: 'ws://localhost:8000'
+  server: 'ws://localhost:8000/backend'
 };
 
 /*

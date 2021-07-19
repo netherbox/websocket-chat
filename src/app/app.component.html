@@ -1,5 +1,17 @@
 <ng-container *ngIf="chatService.connected$ | async; else notConnected">
-  Ready to join...
+  <ng-container *ngIf="chatService.joined$ | async; else notJoined">
+    Joined!
+  </ng-container>
+  <ng-template #notJoined>
+    <div *ngIf="!joining; else showJoining">
+      <form (submit)="join(nickName.value)">
+        <label for="nickNameInput">Nick name:</label>
+        <input id="nickNameInput" required #nickName />
+        <input type="submit" value="Join" />
+      </form>
+    </div>
+    <ng-template #showJoining>Joining...</ng-template>
+  </ng-template>
 </ng-container>
 
 <ng-template #notConnected>Connecting...</ng-template>

@@ -7,5 +7,13 @@ import { ChatService } from './services/chat.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  joining = false;
+
   constructor(public chatService: ChatService) {}
+
+  async join(nickName: string) {
+    this.joining = true;
+    await this.chatService.join(nickName);
+    this.joining = false;
+  }
 }

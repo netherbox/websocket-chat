@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  server: 'ws://localhost:8000'
+  server: 'ws://localhost:8000/backend'
 };
