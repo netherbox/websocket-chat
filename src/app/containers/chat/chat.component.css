@@ -24,6 +24,19 @@
   margin-top: auto !important;
 }
 
+.author {
+  font-weight: 700;
+}
+
+.stamp {
+  color: #9A9FA8;
+  font-weight: normal;
+}
+
+.text {
+  margin-top: 5px;
+}
+
 .form {
   display: flex;
 }

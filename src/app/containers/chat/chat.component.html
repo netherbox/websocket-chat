@@ -1,6 +1,12 @@
 <ul class="messages" #messages>
   <li *ngFor="let message of chatService.messages$ | async">
-    {{ message | json }}
+    <div class="author">
+      {{ message.createdBy }}
+      <span class="stamp">{{ message.createdAt | date: "shortTime" }}</span>
+    </div>
+    <div class="text">
+      {{ message.text }}
+    </div>
   </li>
 </ul>
 

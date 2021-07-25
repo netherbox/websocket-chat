@@ -58,6 +58,8 @@ export class ChatService implements OnDestroy {
     const message: ChatMessage = {
       messageId: uuidv4(),
       text: text,
+      createdAt: new Date().toISOString(),
+      createdBy: this.currentUserId
     };
 
     this.messages$.next([...this.messages$.getValue(), message]);
