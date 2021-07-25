@@ -1,6 +1,11 @@
 <ng-container *ngIf="chatService.connected$ | async; else notConnected">
   <ng-container *ngIf="chatService.joined$ | async; else notJoined">
-    Joined!
+    <ng-container *ngIf="chatService.participants$ | async as participants">
+      <app-participants-list
+        *ngIf="participants"
+        [participants]="participants"
+      ></app-participants-list>
+    </ng-container>
   </ng-container>
   <ng-template #notJoined>
     <div *ngIf="!joining; else showJoining">

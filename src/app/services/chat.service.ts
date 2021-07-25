@@ -16,8 +16,8 @@ export class ChatService implements OnDestroy {
   joined$ = new BehaviorSubject(false);
   command$ = new Subject();
 
-  messages$ = new Subject<Array<ChatMessage>>();
-  participants$ = new Subject<Array<string>>();
+  messages$ = new BehaviorSubject<Array<ChatMessage>>([]);
+  participants$ = new BehaviorSubject<Array<string>>([]);
 
   connectionSubscription: Subscription;
 
@@ -25,6 +25,10 @@ export class ChatService implements OnDestroy {
     this.connectionSubscription = this.webSocket.connected$.subscribe(
       this.connected$
     );
+
+    this.participants$.subscribe((a) => {
+      console.log(a);
+    })
   }
 
   async join(nickName: string) {
@@ -32,6 +36,8 @@ export class ChatService implements OnDestroy {
       JoinCommandRequest,
       JoinCommandResponse
     >('JOIN_COMMAND', { nickName });
+
+    console.log(result);
 
     this.messages$.next(result.messages);
     this.participants$.next(result.participants);
