@@ -58,4 +58,32 @@
 .content {
   flex-grow: 1;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat__messages {
+  flex-grow: 1;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.chat__form {
+  display: flex;
+}
+
+.chat__input {
+  flex-grow: 1;
+  display: block;
+  padding: 12px 14px;
+  border: 1px solid #868d98;
+  margin: 16px;
+  border-radius: 3px;
 }

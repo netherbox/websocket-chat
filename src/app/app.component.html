@@ -24,13 +24,31 @@
             *ngIf="selectedTab == 0 && participants"
             [participants]="participants"
           ></app-participants-list>
+          <div class="chat" *ngIf="selectedTab == 1">
+            <ul class="chat__messages">
+              <li *ngFor="let message of chatService.messages$ | async">
+                {{ message | json }}
+              </li>
+            </ul>
+            <form
+              class="chat__form"
+              (submit)="onSendMessageSubmit(message.value)"
+            >
+              <input
+                class="chat__input"
+                placeholder="Message"
+                required
+                #message
+              />
+            </form>
+          </div>
         </div>
       </div>
     </ng-container>
   </ng-container>
   <ng-template #notJoined>
     <div *ngIf="!joining; else showJoining">
-      <form (submit)="join(nickName.value)">
+      <form (submit)="onJoinSubmit(nickName.value)">
         <label for="nickNameInput">Nick name:</label>
         <input id="nickNameInput" required #nickName />
         <input type="submit" value="Join" />
