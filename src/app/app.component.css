@@ -33,6 +33,7 @@
   flex-grow: 1;
   user-select: none;
   cursor: pointer;
+  width: 100%;
 }
 
 .tabs > .tab.selected {
