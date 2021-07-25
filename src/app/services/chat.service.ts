@@ -12,6 +12,10 @@ import {
   SendCommandRequest,
   SendCommandResponse,
 } from '../models/send-command.model';
+import {
+  DeleteCommandRequest,
+  DeleteCommandResponse,
+} from '../models/delete-command.model';
 
 @Injectable({
   providedIn: 'root',
@@ -59,7 +63,7 @@ export class ChatService implements OnDestroy {
       messageId: uuidv4(),
       text: text,
       createdAt: new Date().toISOString(),
-      createdBy: this.currentUserId
+      createdBy: this.currentUserId,
     };
 
     this.messages$.next([...this.messages$.getValue(), message]);
@@ -68,6 +72,36 @@ export class ChatService implements OnDestroy {
       SendCommandRequest,
       SendCommandResponse
     >('SEND_COMMAND', { userId: this.currentUserId, message });
+
+    this.messages$.next([
+      ...this.messages$
+        .getValue()
+        .map((item: ChatMessage) =>
+          item.messageId === result.message.messageId ? result.message : item
+        ),
+    ]);
+  }
+
+  async delete(target: ChatMessage) {
+    const message: ChatMessage = {
+      ...target,
+      deleted: true,
+      deletedAt: new Date().toISOString(),
+      deletedBy: this.currentUserId,
+    };
+
+    this.messages$.next([
+      ...this.messages$
+        .getValue()
+        .map((item: ChatMessage) =>
+          item.messageId === message.messageId ? message : item
+        ),
+    ]);
+
+    const result = await this.webSocket.sendCommandAndWaitForResponse<
+      DeleteCommandRequest,
+      DeleteCommandResponse
+    >('DELETE_COMMAND', { userId: this.currentUserId, message });
 
     this.messages$.next([
       ...this.messages$

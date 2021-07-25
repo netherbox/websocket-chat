@@ -53,6 +53,10 @@
   display: block;
 }
 
+.deleted {
+  margin-top: 5px;
+}
+
 .form {
   display: flex;
 }

@@ -7,7 +7,8 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ChatService } from 'src/app/services/chat.service';
+import { ChatMessage } from '../../models/chat-message.model';
+import { ChatService } from '../../services/chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -46,6 +47,14 @@ export class Chat implements AfterViewInit, OnDestroy {
           this.messages.nativeElement.scrollHeight;
       }
     }, 100);
+  }
+
+  onEditClick(message: ChatMessage) {
+    // TODO: implement edit
+  }
+
+  onDeleteClick(message: ChatMessage) {
+    this.chatService.delete(message);
   }
 
   ngOnDestroy(): void {

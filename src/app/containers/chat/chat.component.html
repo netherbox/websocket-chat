@@ -4,12 +4,21 @@
       {{ message.createdBy }}
       <span class="stamp">{{ message.createdAt | date: "shortTime" }}</span>
     </div>
-    <div class="text">
-      {{ message.text }}
+
+    <div class="deleted" *ngIf="message.deleted">
+      The message was deleted by {{ message.deletedBy }} at
+      {{ message.createdAt | date: "shortTime" }}
     </div>
-    <div class="tools" *ngIf="message.createdBy == chatService.currentUserId">
-      <button>Edit</button> &#160; <button>Delete</button>
-    </div>
+
+    <ng-container *ngIf="!message.deleted">
+      <div class="text">
+        {{ message.text }}
+      </div>
+      <div class="tools" *ngIf="message.createdBy == chatService.currentUserId">
+        <button (click)="onEditClick(message)">Edit</button> &#160;
+        <button (click)="onDeleteClick(message)">Delete</button>
+      </div>
+    </ng-container>
   </li>
 </ul>
 
