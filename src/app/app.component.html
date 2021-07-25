@@ -30,11 +30,13 @@
     </ng-container>
   </ng-container>
   <ng-template #notJoined>
-    <div *ngIf="!joining; else showJoining">
-      <form (submit)="onJoinSubmit(nickName.value)">
-        <label for="nickNameInput">Nick name:</label>
-        <input id="nickNameInput" required #nickName />
-        <input type="submit" value="Join" />
+    <div class="join" *ngIf="!joining; else showJoining">
+      <form class="join__form" (submit)="onJoinSubmit(nickName.value)">
+        <label class="join__label" for="nickNameInput">Nick name:</label>
+        <input class="join__input" id="nickNameInput" required #nickName />
+        <div class="join__actions">
+          <input type="submit" value="Join" />
+        </div>
       </form>
     </div>
     <ng-template #showJoining>Joining...</ng-template>
