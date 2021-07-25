@@ -7,6 +7,9 @@
     <div class="text">
       {{ message.text }}
     </div>
+    <div class="tools" *ngIf="message.createdBy == chatService.currentUserId">
+      <button>Edit</button> &#160; <button>Delete</button>
+    </div>
   </li>
 </ul>
 
