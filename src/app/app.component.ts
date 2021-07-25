@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { OnDestroy, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ChatService } from './services/chat.service';
 
 @Component({
@@ -11,9 +13,10 @@ export class AppComponent {
 
   selectedTab = 1;
 
-  constructor(public chatService: ChatService) {}
+  constructor(public chatService: ChatService) {
+  }
 
-  onJoinSubmit(nickName: string) {
+  onJoinSubmit(nickName: string): boolean {
     this.join(nickName);
     return false;
   }
@@ -22,15 +25,5 @@ export class AppComponent {
     this.joining = true;
     await this.chatService.join(nickName);
     this.joining = false;
-  }
-
-  onSendMessageSubmit(message: string) {
-    this.sendMessage(message);
-    return false;
-  }
-
-  async sendMessage(message: string) {
-    // TODO: send message
-    console.log(message);
   }
 }

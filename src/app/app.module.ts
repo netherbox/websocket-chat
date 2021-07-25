@@ -3,11 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { ParticipantsList } from './components/participants-list/participants-list.component';
+import { Chat } from './containers/chat/chat.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ParticipantsList
+    ParticipantsList,
+    Chat
   ],
   imports: [
     BrowserModule

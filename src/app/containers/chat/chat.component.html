@@ -1,0 +1,9 @@
+<ul class="messages" #messages>
+  <li *ngFor="let message of chatService.messages$ | async">
+    {{ message | json }}
+  </li>
+</ul>
+
+<form class="form" (submit)="onSendMessageSubmit(messageInput)">
+  <input class="input" placeholder="Message" required #messageInput />
+</form>

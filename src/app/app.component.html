@@ -24,24 +24,7 @@
             *ngIf="selectedTab == 0 && participants"
             [participants]="participants"
           ></app-participants-list>
-          <div class="chat" *ngIf="selectedTab == 1">
-            <ul class="chat__messages">
-              <li *ngFor="let message of chatService.messages$ | async">
-                {{ message | json }}
-              </li>
-            </ul>
-            <form
-              class="chat__form"
-              (submit)="onSendMessageSubmit(message.value)"
-            >
-              <input
-                class="chat__input"
-                placeholder="Message"
-                required
-                #message
-              />
-            </form>
-          </div>
+          <app-chat *ngIf="selectedTab == 1"> </app-chat>
         </div>
       </div>
     </ng-container>
