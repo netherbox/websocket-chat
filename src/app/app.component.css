@@ -28,6 +28,7 @@
 
 .tabs > .tab {
   padding: 20px;
+  border-top: 1px solid transparent;
   border-bottom: 1px solid #e1e3e5;
   text-align: center;
   flex-grow: 1;

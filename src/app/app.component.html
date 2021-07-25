@@ -4,14 +4,24 @@
       <div class="container">
         <div class="header">Status meeting Standup</div>
         <div class="tabs">
-          <div class="tab selected">
+          <div
+            class="tab"
+            [class.selected]="selectedTab == 0"
+            (click)="selectedTab = 0"
+          >
             Participants ({{ participants?.length }})
           </div>
-          <div class="tab">Chat</div>
+          <div
+            class="tab"
+            [class.selected]="selectedTab == 1"
+            (click)="selectedTab = 1"
+          >
+            Chat
+          </div>
         </div>
         <div class="content">
           <app-participants-list
-            *ngIf="participants"
+            *ngIf="selectedTab == 0 && participants"
             [participants]="participants"
           ></app-participants-list>
         </div>

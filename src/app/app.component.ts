@@ -9,6 +9,8 @@ import { ChatService } from './services/chat.service';
 export class AppComponent {
   joining = false;
 
+  selectedTab = 1;
+
   constructor(public chatService: ChatService) {}
 
   async join(nickName: string) {
