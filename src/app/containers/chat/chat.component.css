@@ -45,12 +45,28 @@
   right: 23px;
 }
 
+.tools > * {
+  margin-left: 5px;
+}
+
 .messages > li:hover {
   background: #f2f2f2;
 }
 
 .messages > li:hover .tools {
   display: block;
+}
+
+.update .actions {
+  padding: 0 16px;
+}
+
+.update .actions > * {
+  margin-right: 5px;
+}
+
+.updated {
+  margin-top: 5px;
 }
 
 .deleted {

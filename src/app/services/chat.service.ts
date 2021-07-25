@@ -16,6 +16,10 @@ import {
   DeleteCommandRequest,
   DeleteCommandResponse,
 } from '../models/delete-command.model';
+import {
+  UpdateCommandRequest,
+  UpdateCommandResponse,
+} from '../models/edit-command.model';
 
 @Injectable({
   providedIn: 'root',
@@ -72,6 +76,36 @@ export class ChatService implements OnDestroy {
       SendCommandRequest,
       SendCommandResponse
     >('SEND_COMMAND', { userId: this.currentUserId, message });
+
+    this.messages$.next([
+      ...this.messages$
+        .getValue()
+        .map((item: ChatMessage) =>
+          item.messageId === result.message.messageId ? result.message : item
+        ),
+    ]);
+  }
+
+  async update(target: ChatMessage) {
+    const message: ChatMessage = {
+      ...target,
+      updated: true,
+      updatedAt: new Date().toISOString(),
+      updatedBy: this.currentUserId,
+    };
+
+    this.messages$.next([
+      ...this.messages$
+        .getValue()
+        .map((item: ChatMessage) =>
+          item.messageId === message.messageId ? message : item
+        ),
+    ]);
+
+    const result = await this.webSocket.sendCommandAndWaitForResponse<
+      UpdateCommandRequest,
+      UpdateCommandResponse
+    >('UPDATE_COMMAND', { userId: this.currentUserId, message });
 
     this.messages$.next([
       ...this.messages$

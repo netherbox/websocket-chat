@@ -18,6 +18,8 @@ import { ChatService } from '../../services/chat.service';
 export class Chat implements AfterViewInit, OnDestroy {
   @ViewChild('messages') messages: ElementRef | undefined;
 
+  updatingMessage: ChatMessage | undefined;
+
   messagesSubcription: Subscription;
 
   constructor(public chatService: ChatService) {
@@ -49,8 +51,24 @@ export class Chat implements AfterViewInit, OnDestroy {
     }, 100);
   }
 
-  onEditClick(message: ChatMessage) {
-    // TODO: implement edit
+  onUpdateClick(message: ChatMessage) {
+    this.updatingMessage = { ...message };
+  }
+
+  onUpdateMessageSubmit(messageInput: HTMLInputElement): boolean {
+    if (this.updatingMessage) {
+      this.updateMessage({ ...this.updatingMessage, text: messageInput.value });
+      this.updatingMessage = undefined;
+    }
+    return false;
+  }
+
+  async updateMessage(message: ChatMessage) {
+    await this.chatService.update(message);
+  }
+
+  onUpdateMessageCancel() {
+    this.updatingMessage = undefined;
   }
 
   onDeleteClick(message: ChatMessage) {
