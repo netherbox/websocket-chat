@@ -1,10 +1,21 @@
 <ng-container *ngIf="chatService.connected$ | async; else notConnected">
   <ng-container *ngIf="chatService.joined$ | async; else notJoined">
     <ng-container *ngIf="chatService.participants$ | async as participants">
-      <app-participants-list
-        *ngIf="participants"
-        [participants]="participants"
-      ></app-participants-list>
+      <div class="container">
+        <div class="header">Status meeting Standup</div>
+        <div class="tabs">
+          <div class="tab selected">
+            Participants ({{ participants?.length }})
+          </div>
+          <div class="tab">Chat</div>
+        </div>
+        <div class="content">
+          <app-participants-list
+            *ngIf="participants"
+            [participants]="participants"
+          ></app-participants-list>
+        </div>
+      </div>
     </ng-container>
   </ng-container>
   <ng-template #notJoined>
