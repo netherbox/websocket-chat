@@ -33,9 +33,7 @@ app.ws("/backend", (ws, req) => {
         break;
 
       case "SEND_COMMAND":
-        messages = messages.map((item) =>
-          item.messageId === decoded.payload.message.messageId ? message : item
-        );
+        messages = [...messages, decoded.payload.message];
 
         expressWs.getWss().clients.forEach((client) => {
           if (client !== ws && client.readyState === WebSocket.OPEN) {
@@ -54,6 +52,68 @@ app.ws("/backend", (ws, req) => {
           JSON.stringify({
             responseTo: decoded.commandId,
             type: "SEND_COMMAND_RESPONSE",
+            payload: {
+              message: decoded.payload.message,
+            },
+          })
+        );
+        break;
+
+      case "UPDATE_COMMAND":
+        messages = messages.map((item) =>
+          item.messageId === decoded.payload.message.messageId
+            ? decoded.payload.message
+            : item
+        );
+
+        expressWs.getWss().clients.forEach((client) => {
+          if (client !== ws && client.readyState === WebSocket.OPEN) {
+            client.send(
+              JSON.stringify({
+                type: "MESSAGE_CHANGED_COMMAND",
+                payload: {
+                  message: decoded.payload.message,
+                },
+              })
+            );
+          }
+        });
+
+        ws.send(
+          JSON.stringify({
+            responseTo: decoded.commandId,
+            type: "UPDATE_COMMAND_RESPONSE",
+            payload: {
+              message: decoded.payload.message,
+            },
+          })
+        );
+        break;
+
+      case "DELETE_COMMAND":
+        messages = messages.map((item) =>
+          item.messageId === decoded.payload.message.messageId
+            ? decoded.payload.message
+            : item
+        );
+
+        expressWs.getWss().clients.forEach((client) => {
+          if (client !== ws && client.readyState === WebSocket.OPEN) {
+            client.send(
+              JSON.stringify({
+                type: "MESSAGE_CHANGED_COMMAND",
+                payload: {
+                  message: decoded.payload.message,
+                },
+              })
+            );
+          }
+        });
+
+        ws.send(
+          JSON.stringify({
+            responseTo: decoded.commandId,
+            type: "DELETE_COMMAND_RESPONSE",
             payload: {
               message: decoded.payload.message,
             },

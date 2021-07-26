@@ -42,10 +42,6 @@ export class ChatService implements OnDestroy {
       this.connected$
     );
 
-    this.participants$.subscribe((a) => {
-      console.log(a);
-    });
-
     (
       this.webSocket.command$ as Observable<
         Command<MessageChangedCommandResponse>
