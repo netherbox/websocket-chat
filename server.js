@@ -7,8 +7,12 @@ var expressWs = require("express-ws")(app, null, {
 });
 var WebSocket = require("ws");
 
+const port = 8000;
+
 let participants = [];
 let messages = [];
+
+app.use("/", express.static("dist/websocket-chat"));
 
 app.ws("/backend", (ws, req) => {
   ws.on("message", (msg) => {
@@ -124,4 +128,10 @@ app.ws("/backend", (ws, req) => {
   });
 });
 
-app.listen(8000);
+require("dns").lookup(require("os").hostname(), function (err, address, fam) {
+  console.log(
+    `** WebSocket Chat Live Server is listening on ${address}:${port}, open your browser on http://${address}:${port}/`
+  );
+});
+
+app.listen(port);
