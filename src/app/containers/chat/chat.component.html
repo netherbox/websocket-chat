@@ -28,6 +28,7 @@
       <form class="update" (submit)="onUpdateMessageSubmit(updateMessageInput)">
         <input
           class="input"
+          type="text"
           placeholder="Message"
           required
           #updateMessageInput
@@ -52,5 +53,11 @@
 </ul>
 
 <form class="form" (submit)="onSendMessageSubmit(messageInput)">
-  <input class="input" placeholder="Message" required #messageInput />
+  <input
+    class="input"
+    type="text"
+    placeholder="Message"
+    required
+    #messageInput
+  />
 </form>

@@ -33,7 +33,14 @@
     <div class="join" *ngIf="!joining; else showJoining">
       <form class="join__form" (submit)="onJoinSubmit(nickName.value)">
         <label class="join__label" for="nickNameInput">Nick name:</label>
-        <input class="join__input" id="nickNameInput" required #nickName />
+        <input
+          class="join__input"
+          type="text"
+          id="nickNameInput"
+          required
+          autofocus
+          #nickName
+        />
         <div class="join__actions">
           <input type="submit" value="Join" />
         </div>

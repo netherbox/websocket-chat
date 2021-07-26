@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
-import { WebSocketService } from './websocket.service';
+import { Command, WebSocketService } from './websocket.service';
 import { ChatMessage } from '../models/chat-message.model';
 import {
   JoinCommandRequest,
@@ -20,6 +20,7 @@ import {
   UpdateCommandRequest,
   UpdateCommandResponse,
 } from '../models/edit-command.model';
+import { MessageChangedCommandResponse } from '../models/message-changed-command.model';
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +44,40 @@ export class ChatService implements OnDestroy {
 
     this.participants$.subscribe((a) => {
       console.log(a);
+    });
+
+    (
+      this.webSocket.command$ as Observable<
+        Command<MessageChangedCommandResponse>
+      >
+    ).subscribe((command) => {
+      switch (command.type) {
+        case 'MESSAGE_CHANGED_COMMAND':
+          if (
+            this.messages$
+              .getValue()
+              .findIndex(
+                (item: ChatMessage) =>
+                  item.messageId === command.payload.message.messageId
+              ) !== -1
+          ) {
+            this.messages$.next([
+              ...this.messages$
+                .getValue()
+                .map((item: ChatMessage) =>
+                  item.messageId === command.payload.message.messageId
+                    ? command.payload.message
+                    : item
+                ),
+            ]);
+          } else {
+            this.messages$.next([
+              ...this.messages$.getValue(),
+              command.payload.message,
+            ]);
+          }
+          break;
+      }
     });
   }
 

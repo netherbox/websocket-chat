@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
 import { BehaviorSubject, fromEvent, Subject, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 
@@ -19,16 +19,19 @@ export class WebSocketService implements OnDestroy {
   private webSocket = new WebSocket(environment.server);
 
   public connected$ = new BehaviorSubject(false);
-  public message$ = new Subject();
+  public command$ = new Subject();
 
-  private messageSubscription: Subscription;
+  private commandSubscription: Subscription;
   private openSubscription: Subscription;
   private closeSubscription: Subscription;
 
   constructor() {
-    this.messageSubscription = fromEvent(this.webSocket, 'message').subscribe(
-      this.message$
-    );
+    this.commandSubscription = fromEvent<MessageEvent>(
+      this.webSocket,
+      'message'
+    )
+      .pipe(map((event) => JSON.parse(event.data) as Command<any>))
+      .subscribe(this.command$);
 
     this.openSubscription = fromEvent(this.webSocket, 'open')
       .pipe(map(() => true))
@@ -98,7 +101,7 @@ export class WebSocketService implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.messageSubscription?.unsubscribe();
+    this.commandSubscription?.unsubscribe();
     this.openSubscription?.unsubscribe();
     this.closeSubscription?.unsubscribe();
   }
