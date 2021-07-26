@@ -75,6 +75,10 @@ export class Chat implements AfterViewInit, OnDestroy {
     this.chatService.delete(message);
   }
 
+  messageById(_index: number, message: ChatMessage) {
+    return message.messageId;
+  }
+
   ngOnDestroy(): void {
     this.messagesSubcription?.unsubscribe();
   }
