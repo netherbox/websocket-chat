@@ -1,0 +1,42 @@
+<div class="author">
+  {{ message?.createdBy }}
+  <span class="stamp">{{ message?.createdAt | date: "shortTime" }}</span>
+</div>
+
+<ng-container *ngIf="!message.deleted && !showUpdateForm">
+  <div class="text">
+    {{ message.text }}
+  </div>
+
+  <div class="tools" *ngIf="editable">
+    <button (click)="onUpdateClick()">Edit</button>
+    <button (click)="onDeleteClick()">Delete</button>
+  </div>
+
+  <div class="updated" *ngIf="message.updated">
+    The message was edited by {{ message.updatedBy }} at
+    {{ message.createdAt | date: "shortTime" }}
+  </div>
+</ng-container>
+
+<ng-container *ngIf="showUpdateForm">
+  <form class="update" (submit)="onUpdateMessageSubmit(updateMessageInput)">
+    <input
+      class="input"
+      type="text"
+      placeholder="Message"
+      required
+      #updateMessageInput
+      [value]="message.text"
+    />
+    <div class="actions">
+      <input type="submit" value="Submit" />
+      <button (click)="onUpdateMessageCancel()">Cancel</button>
+    </div>
+  </form>
+</ng-container>
+
+<div class="deleted" *ngIf="message.deleted">
+  The message was deleted by {{ message.deletedBy }} at
+  {{ message.createdAt | date: "shortTime" }}
+</div>

@@ -1,0 +1,198 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatMessageComponent editable should render tools bar if editable false 1`] = `
+<div
+  id="root2"
+>
+  <div
+    class="author"
+  >
+      
+    <span
+      class="stamp"
+    >
+      
+    </span>
+  </div>
+  
+  
+  <div
+    class="text"
+  >
+     test-text 
+  </div>
+  
+  
+  
+  
+  
+</div>
+`;
+
+exports[`ChatMessageComponent editable should render tools bar if editable true 1`] = `
+<div
+  id="root1"
+>
+  <div
+    class="author"
+  >
+      
+    <span
+      class="stamp"
+    >
+      
+    </span>
+  </div>
+  
+  
+  <div
+    class="text"
+  >
+     test-text 
+  </div>
+  
+  <div
+    class="tools"
+  >
+    <button>
+      Edit
+    </button>
+    <button>
+      Delete
+    </button>
+  </div>
+  
+  
+  
+  
+</div>
+`;
+
+exports[`ChatMessageComponent onUpdateClick should show update form 1`] = `
+<div
+  id="root3"
+>
+  <div
+    class="author"
+  >
+      
+    <span
+      class="stamp"
+    >
+      
+    </span>
+  </div>
+  
+  
+  
+  <form
+    class="update"
+  >
+    <input
+      class="input"
+      placeholder="Message"
+      required=""
+      type="text"
+    />
+    <div
+      class="actions"
+    >
+      <input
+        type="submit"
+        value="Submit"
+      />
+      <button>
+        Cancel
+      </button>
+    </div>
+  </form>
+  
+</div>
+`;
+
+exports[`ChatMessageComponent onUpdateMessageCancel should hide update form 1`] = `
+<div
+  id="root4"
+>
+  <div
+    class="author"
+  >
+      
+    <span
+      class="stamp"
+    >
+      
+    </span>
+  </div>
+  
+  
+  <div
+    class="text"
+  >
+     test-text 
+  </div>
+  
+  
+  
+  
+  
+</div>
+`;
+
+exports[`ChatMessageComponent onUpdateMessageSubmit should emit update event 1`] = `
+<div
+  id="root5"
+>
+  <div
+    class="author"
+  >
+      
+    <span
+      class="stamp"
+    >
+      
+    </span>
+  </div>
+  
+  
+  <div
+    class="text"
+  >
+     test-text 
+  </div>
+  
+  
+  
+  
+  
+</div>
+`;
+
+exports[`ChatMessageComponent should successfully create component with expected html 1`] = `
+<div
+  id="root0"
+>
+  <div
+    class="author"
+  >
+      
+    <span
+      class="stamp"
+    >
+      
+    </span>
+  </div>
+  
+  
+  <div
+    class="text"
+  >
+     test-text 
+  </div>
+  
+  
+  
+  
+  
+</div>
+`;

@@ -85,8 +85,6 @@ export class ChatService implements OnDestroy {
       JoinCommandResponse
     >('JOIN_COMMAND', { nickName });
 
-    console.log(result);
-
     this.messages$.next(result.messages);
     this.participants$.next(result.participants);
 

@@ -2,55 +2,12 @@
   <li
     *ngFor="let message of chatService.messages$ | async; trackBy: messageById"
   >
-    <div class="author">
-      {{ message.createdBy }}
-      <span class="stamp">{{ message.createdAt | date: "shortTime" }}</span>
-    </div>
-
-    <ng-container
-      *ngIf="
-        !message.deleted && !(message.messageId === updatingMessage?.messageId)
-      "
-    >
-      <div class="text">
-        {{ message.text }}
-      </div>
-      <div class="tools" *ngIf="message.createdBy == chatService.currentUserId">
-        <button (click)="onUpdateClick(message)">Edit</button>
-        <button (click)="onDeleteClick(message)">Delete</button>
-      </div>
-
-      <div class="updated" *ngIf="message.updated">
-        The message was edited by {{ message.updatedBy }} at
-        {{ message.createdAt | date: "shortTime" }}
-      </div>
-    </ng-container>
-
-    <ng-container *ngIf="message.messageId === updatingMessage?.messageId">
-      <form class="update" (submit)="onUpdateMessageSubmit(updateMessageInput)">
-        <input
-          class="input"
-          type="text"
-          placeholder="Message"
-          required
-          #updateMessageInput
-          [value]="message.text"
-        />
-        <div class="actions">
-          <input type="submit" value="Submit" />
-          <input
-            type="button"
-            value="Cancel"
-            (click)="onUpdateMessageCancel()"
-          />
-        </div>
-      </form>
-    </ng-container>
-
-    <div class="deleted" *ngIf="message.deleted">
-      The message was deleted by {{ message.deletedBy }} at
-      {{ message.createdAt | date: "shortTime" }}
-    </div>
+    <app-message
+      [message]="message"
+      [editable]="message.createdBy == chatService.currentUserId"
+      (update)="onUpdateMessage($event)"
+      (delete)="onDeleteMessage($event)"
+    ></app-message>
   </li>
 </ul>
 

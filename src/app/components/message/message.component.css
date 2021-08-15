@@ -1,0 +1,60 @@
+:host {
+  display: block;
+  position: relative;
+  padding: 12px 23px;
+}
+
+:host:hover {
+  background: #f2f2f2;
+}
+
+:host:hover .tools {
+  display: block;
+}
+
+.author {
+  font-weight: 700;
+}
+
+.stamp {
+  color: #9a9fa8;
+  font-weight: normal;
+}
+
+.text {
+  margin-top: 5px;
+}
+
+button,
+input[type="submit"] {
+  padding: 5px 10px;
+  border: 1px solid #868d98;
+  border-radius: 3px;
+}
+
+.tools {
+  display: none;
+  position: absolute;
+  top: 12px;
+  right: 23px;
+}
+
+.tools > * {
+  margin-left: 5px;
+}
+
+.update .actions > * {
+  margin-right: 5px;
+}
+
+.update input[type="text"] {
+  display: block;
+  padding: 12px 14px;
+  border: 1px solid #868d98;
+  margin: 16px 0 8px;
+  border-radius: 3px;
+}
+
+.deleted {
+  margin-top: 5px;
+}

@@ -1,7 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+
 import { AppComponent } from './app.component';
 import { ChatService } from './services/chat.service';
+import { ParticipantsListComponent } from './components/participants-list/participants-list.component';
+import { ChatComponent } from './containers/chat/chat.component';
+import { ChatMessageComponent } from './components/message/message.component';
 
 describe('AppComponent', () => {
   let connectedMock$: BehaviorSubject<boolean>;
@@ -10,7 +14,12 @@ describe('AppComponent', () => {
     connectedMock$ = new BehaviorSubject<boolean>(false);
 
     await TestBed.configureTestingModule({
-      declarations: [AppComponent],
+      declarations: [
+        AppComponent,
+        ParticipantsListComponent,
+        ChatComponent,
+        ChatMessageComponent,
+      ],
       providers: [
         {
           provide: ChatService,

@@ -81,7 +81,7 @@
   display: block;
   padding: 12px 14px;
   border: 1px solid #868d98;
-  margin: 10px 16px ;
+  margin: 10px 16px;
   border-radius: 3px;
 }
 
@@ -91,4 +91,10 @@
 
 .join__actions > * {
   margin-right: 5px;
+}
+
+.join__actions > input {
+  padding: 5px 10px;
+  border: 1px solid #868d98;
+  border-radius: 3px;
 }

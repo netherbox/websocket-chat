@@ -15,7 +15,7 @@ import { ChatService } from '../../services/chat.service';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
 })
-export class Chat implements AfterViewInit, OnDestroy {
+export class ChatComponent implements AfterViewInit, OnDestroy {
   @ViewChild('messages') messages: ElementRef | undefined;
 
   updatingMessage: ChatMessage | undefined;
@@ -51,27 +51,11 @@ export class Chat implements AfterViewInit, OnDestroy {
     }, 100);
   }
 
-  onUpdateClick(message: ChatMessage) {
-    this.updatingMessage = { ...message };
-  }
-
-  onUpdateMessageSubmit(messageInput: HTMLInputElement): boolean {
-    if (this.updatingMessage) {
-      this.updateMessage({ ...this.updatingMessage, text: messageInput.value });
-      this.updatingMessage = undefined;
-    }
-    return false;
-  }
-
-  async updateMessage(message: ChatMessage) {
+  async onUpdateMessage(message: ChatMessage) {
     await this.chatService.update(message);
   }
 
-  onUpdateMessageCancel() {
-    this.updatingMessage = undefined;
-  }
-
-  onDeleteClick(message: ChatMessage) {
+  onDeleteMessage(message: ChatMessage) {
     this.chatService.delete(message);
   }
 
