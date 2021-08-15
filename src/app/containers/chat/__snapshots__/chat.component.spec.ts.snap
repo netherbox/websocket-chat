@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatComponent should successfully create component with empty list 1`] = `
+<div
+  id="root0"
+>
+  <ul
+    class="messages"
+  >
+    
+  </ul>
+  <form
+    class="form"
+  >
+    <input
+      class="input"
+      placeholder="Message"
+      required=""
+      type="text"
+    />
+  </form>
+</div>
+`;

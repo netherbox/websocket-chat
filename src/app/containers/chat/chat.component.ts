@@ -16,9 +16,7 @@ import { ChatService } from '../../services/chat.service';
   styleUrls: ['./chat.component.css'],
 })
 export class ChatComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('messages') messages: ElementRef | undefined;
-
-  updatingMessage: ChatMessage | undefined;
+  @ViewChild('messagesContainer') messagesContainer: ElementRef | undefined;
 
   messagesSubcription: Subscription;
 
@@ -44,9 +42,9 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
 
   scrollDown(): void {
     setTimeout(() => {
-      if (this.messages) {
-        this.messages.nativeElement.scrollTop =
-          this.messages.nativeElement.scrollHeight;
+      if (this.messagesContainer) {
+        this.messagesContainer.nativeElement.scrollTop =
+          this.messagesContainer.nativeElement.scrollHeight;
       }
     }, 100);
   }
@@ -64,6 +62,6 @@ export class ChatComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.messagesSubcription?.unsubscribe();
+    this.messagesSubcription.unsubscribe();
   }
 }
