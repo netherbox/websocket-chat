@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { runOnPushChangeDetection } from '../../utils/run-on-push-change-detection';
 
 import { ChatMessage } from '../../models/chat-message.model';
 import { ChatMessageComponent } from './message.component';
@@ -34,7 +35,7 @@ describe('ChatMessageComponent', () => {
   describe('editable', () => {
     it('should render tools bar if editable true', () => {
       component.editable = true;
-      fixture.detectChanges();
+      runOnPushChangeDetection(fixture);
 
       expect(fixture.nativeElement.querySelector('.tools')).toBeTruthy();
       expect(fixture.nativeElement).toMatchSnapshot();
@@ -42,7 +43,7 @@ describe('ChatMessageComponent', () => {
 
     it('should render tools bar if editable false', () => {
       component.editable = false;
-      fixture.detectChanges();
+      runOnPushChangeDetection(fixture);
 
       expect(fixture.nativeElement.querySelector('.tools')).toBeFalsy();
       expect(fixture.nativeElement).toMatchSnapshot();
@@ -52,7 +53,7 @@ describe('ChatMessageComponent', () => {
   describe('onUpdateClick', () => {
     it('should show update form', () => {
       component.onUpdateClick();
-      fixture.detectChanges();
+      runOnPushChangeDetection(fixture);
 
       expect(component.showUpdateForm).toBeTruthy();
       expect(fixture.nativeElement.querySelector('.update')).toBeTruthy();
@@ -63,7 +64,7 @@ describe('ChatMessageComponent', () => {
   describe('onUpdateMessageCancel', () => {
     it('should hide update form', () => {
       component.onUpdateMessageCancel();
-      fixture.detectChanges();
+      runOnPushChangeDetection(fixture);
 
       expect(component.showUpdateForm).toBeFalsy();
       expect(fixture.nativeElement.querySelector('.update')).toBeFalsy();
@@ -78,7 +79,7 @@ describe('ChatMessageComponent', () => {
       component.onUpdateMessageSubmit({
         value: 'test-input-value',
       } as unknown as HTMLInputElement);
-      fixture.detectChanges();
+      runOnPushChangeDetection(fixture);
 
       expect(component.update.emit).toBeCalledWith({
         ...testMessage,
@@ -95,7 +96,7 @@ describe('ChatMessageComponent', () => {
       jest.spyOn(component.delete, 'emit');
 
       component.onDeleteClick();
-      fixture.detectChanges();
+      runOnPushChangeDetection(fixture);
 
       expect(component.delete.emit).toBeCalledWith(testMessage);
     });

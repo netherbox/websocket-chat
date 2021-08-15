@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { runOnPushChangeDetection } from '../../utils/run-on-push-change-detection';
 
 import { ParticipantsListComponent } from './participants-list.component';
 
@@ -22,9 +23,9 @@ describe('ParticipantsListComponent', () => {
   });
 
   describe('participants', () => {
-    it('should render participants list', () => {
+    it('should render participants list', async () => {
       component.participants = ['test-participants-1', 'test-participants-2'];
-      fixture.detectChanges();
+      runOnPushChangeDetection(fixture);
 
       expect(fixture.nativeElement.querySelectorAll('li').length).toEqual(2);
       expect(fixture.nativeElement).toMatchSnapshot();
