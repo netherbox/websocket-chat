@@ -21,6 +21,7 @@ import {
   UpdateCommandResponse,
 } from '../models/edit-command.model';
 import { MessageChangedCommandResponse } from '../models/message-changed-command.model';
+import { filter, map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -28,12 +29,12 @@ import { MessageChangedCommandResponse } from '../models/message-changed-command
 export class ChatService implements OnDestroy {
   connected$ = new BehaviorSubject(false);
   joined$ = new BehaviorSubject(false);
-  command$ = new Subject();
 
   messages$ = new BehaviorSubject<Array<ChatMessage>>([]);
   participants$ = new BehaviorSubject<Array<string>>([]);
 
   connectionSubscription: Subscription;
+  messageChangedCommandSubscription: Subscription;
 
   currentUserId = '';
 
@@ -42,39 +43,32 @@ export class ChatService implements OnDestroy {
       this.connected$
     );
 
-    (
-      this.webSocket.command$ as Observable<
-        Command<MessageChangedCommandResponse>
-      >
-    ).subscribe((command) => {
-      switch (command.type) {
-        case 'MESSAGE_CHANGED_COMMAND':
-          if (
-            this.messages$
-              .getValue()
-              .findIndex(
-                (item: ChatMessage) =>
-                  item.messageId === command.payload.message.messageId
-              ) !== -1
-          ) {
-            this.messages$.next([
-              ...this.messages$
-                .getValue()
-                .map((item: ChatMessage) =>
-                  item.messageId === command.payload.message.messageId
-                    ? command.payload.message
-                    : item
-                ),
-            ]);
-          } else {
-            this.messages$.next([
-              ...this.messages$.getValue(),
-              command.payload.message,
-            ]);
-          }
-          break;
-      }
-    });
+    this.messageChangedCommandSubscription = this.webSocket.command$
+      .pipe(
+        filter(
+          (command: Command<any>) => command.type === 'MESSAGE_CHANGED_COMMAND'
+        ),
+        map<Command<MessageChangedCommandResponse>, ChatMessage>(
+          (command: Command<MessageChangedCommandResponse>) =>
+            command.payload.message
+        )
+      )
+      .subscribe((message: ChatMessage) => {
+        const isNewMessage =
+          this.messages$
+            .getValue()
+            .findIndex(
+              (item: ChatMessage) => item.messageId === message.messageId
+            ) === -1;
+
+        if (isNewMessage) {
+          this.messages$.next([...this.messages$.getValue(), message]);
+        } else {
+          this.messages$.next(
+            this.replaceMessage(this.messages$.getValue(), message)
+          );
+        }
+      });
   }
 
   async join(nickName: string) {
@@ -106,13 +100,9 @@ export class ChatService implements OnDestroy {
       SendCommandResponse
     >('SEND_COMMAND', { userId: this.currentUserId, message });
 
-    this.messages$.next([
-      ...this.messages$
-        .getValue()
-        .map((item: ChatMessage) =>
-          item.messageId === result.message.messageId ? result.message : item
-        ),
-    ]);
+    this.messages$.next(
+      this.replaceMessage(this.messages$.getValue(), result.message)
+    );
   }
 
   async update(target: ChatMessage) {
@@ -123,26 +113,18 @@ export class ChatService implements OnDestroy {
       updatedBy: this.currentUserId,
     };
 
-    this.messages$.next([
-      ...this.messages$
-        .getValue()
-        .map((item: ChatMessage) =>
-          item.messageId === message.messageId ? message : item
-        ),
-    ]);
+    this.messages$.next(
+      this.replaceMessage(this.messages$.getValue(), message)
+    );
 
     const result = await this.webSocket.sendCommandAndWaitForResponse<
       UpdateCommandRequest,
       UpdateCommandResponse
     >('UPDATE_COMMAND', { userId: this.currentUserId, message });
 
-    this.messages$.next([
-      ...this.messages$
-        .getValue()
-        .map((item: ChatMessage) =>
-          item.messageId === result.message.messageId ? result.message : item
-        ),
-    ]);
+    this.messages$.next(
+      this.replaceMessage(this.messages$.getValue(), result.message)
+    );
   }
 
   async delete(target: ChatMessage) {
@@ -153,29 +135,33 @@ export class ChatService implements OnDestroy {
       deletedBy: this.currentUserId,
     };
 
-    this.messages$.next([
-      ...this.messages$
-        .getValue()
-        .map((item: ChatMessage) =>
-          item.messageId === message.messageId ? message : item
-        ),
-    ]);
+    this.messages$.next(
+      this.replaceMessage(this.messages$.getValue(), message)
+    );
 
     const result = await this.webSocket.sendCommandAndWaitForResponse<
       DeleteCommandRequest,
       DeleteCommandResponse
     >('DELETE_COMMAND', { userId: this.currentUserId, message });
 
-    this.messages$.next([
-      ...this.messages$
-        .getValue()
-        .map((item: ChatMessage) =>
-          item.messageId === result.message.messageId ? result.message : item
-        ),
-    ]);
+    this.messages$.next(
+      this.replaceMessage(this.messages$.getValue(), result.message)
+    );
+  }
+
+  private replaceMessage(
+    messages: Array<ChatMessage>,
+    replaceWith: ChatMessage
+  ): Array<ChatMessage> {
+    return [
+      ...messages.map((item: ChatMessage) =>
+        item.messageId === replaceWith.messageId ? replaceWith : item
+      ),
+    ];
   }
 
   ngOnDestroy() {
-    this.connectionSubscription?.unsubscribe();
+    this.connectionSubscription.unsubscribe();
+    this.messageChangedCommandSubscription.unsubscribe();
   }
 }

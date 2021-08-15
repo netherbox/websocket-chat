@@ -19,7 +19,7 @@ export class WebSocketService implements OnDestroy {
   private webSocket = new WebSocket(environment.server);
 
   public connected$ = new BehaviorSubject(false);
-  public command$ = new Subject();
+  public command$ = new Subject<Command<any>>();
 
   private commandSubscription: Subscription;
   private openSubscription: Subscription;
