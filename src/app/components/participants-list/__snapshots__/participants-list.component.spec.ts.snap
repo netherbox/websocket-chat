@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ParticipantsListComponent participants should render participants list 1`] = `
+<div
+  id="root1"
+>
+  <ul>
+    
+    <li>
+      test-participants-1
+    </li>
+    <li>
+      test-participants-2
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`ParticipantsListComponent should successfully create component with empty list 1`] = `
+<div
+  id="root0"
+>
+  <ul>
+    
+  </ul>
+</div>
+`;
