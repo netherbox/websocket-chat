@@ -10,7 +10,7 @@ describe('ChatComponent', () => {
   let testMessage: ChatMessage;
   let component: ChatComponent;
   let fixture: ComponentFixture<ChatComponent>;
-  let messagesMock$: BehaviorSubject<boolean>;
+  let messagesMock$: BehaviorSubject<Array<ChatMessage>>;
   let chatService: ChatService;
 
   beforeEach(async () => {
@@ -19,7 +19,7 @@ describe('ChatComponent', () => {
       text: 'test-text',
     };
 
-    messagesMock$ = new BehaviorSubject<boolean>(false);
+    messagesMock$ = new BehaviorSubject<Array<ChatMessage>>([]);
 
     await TestBed.configureTestingModule({
       declarations: [ChatComponent, ChatMessageComponent],
@@ -28,6 +28,7 @@ describe('ChatComponent', () => {
           provide: ChatService,
           useValue: {
             messages$: messagesMock$,
+            currentUserId: 'test-currentUserId',
             send: jest.fn(),
             update: jest.fn(),
             delete: jest.fn(),
@@ -45,6 +46,23 @@ describe('ChatComponent', () => {
 
   it('should successfully create component with empty list', () => {
     expect(component).toBeTruthy();
+    expect(fixture.nativeElement).toMatchSnapshot();
+  });
+
+  it('should render messages', () => {
+    chatService.currentUserId = 'test-currentUserId';
+
+    messagesMock$.next([{
+      messageId: 'test-messageId-1',
+      text: 'test-text-1',
+      createdBy: 'test-currentUserId'
+    }, {
+      messageId: 'test-messageId-2',
+      text: 'test-text-2',
+      createdBy: 'test-someOtherUserId'
+    }]);
+
+    fixture.detectChanges();
     expect(fixture.nativeElement).toMatchSnapshot();
   });
 

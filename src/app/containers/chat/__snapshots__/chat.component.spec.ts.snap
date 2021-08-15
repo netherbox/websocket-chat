@@ -1,5 +1,89 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ChatComponent should render messages 1`] = `
+<div
+  id="root1"
+>
+  <ul
+    class="messages"
+  >
+    
+    <li>
+      <app-message>
+        <div
+          class="author"
+        >
+           test-currentUserId 
+          <span
+            class="stamp"
+          >
+            
+          </span>
+        </div>
+        
+        
+        <div
+          class="text"
+        >
+           test-text-1 
+        </div>
+        
+        <div
+          class="tools"
+        >
+          <button>
+            Edit
+          </button>
+          <button>
+            Delete
+          </button>
+        </div>
+        
+        
+        
+        
+      </app-message>
+    </li>
+    <li>
+      <app-message>
+        <div
+          class="author"
+        >
+           test-someOtherUserId 
+          <span
+            class="stamp"
+          >
+            
+          </span>
+        </div>
+        
+        
+        <div
+          class="text"
+        >
+           test-text-2 
+        </div>
+        
+        
+        
+        
+        
+      </app-message>
+    </li>
+  </ul>
+  <form
+    class="form"
+  >
+    <input
+      class="input"
+      placeholder="Message"
+      required=""
+      type="text"
+    />
+  </form>
+</div>
+`;
+
 exports[`ChatComponent should successfully create component with empty list 1`] = `
 <div
   id="root0"
