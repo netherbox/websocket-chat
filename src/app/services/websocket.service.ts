@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
 import { BehaviorSubject, fromEvent, Subject, Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 
@@ -71,7 +71,8 @@ export class WebSocketService implements OnDestroy {
           const message = JSON.parse(event.data);
 
           if (
-            message?.responseTo === commandId &&
+            message &&
+            message.responseTo === commandId &&
             message.type === `${type}_RESPONSE`
           ) {
             removeListeners();
@@ -101,8 +102,8 @@ export class WebSocketService implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.commandSubscription?.unsubscribe();
-    this.openSubscription?.unsubscribe();
-    this.closeSubscription?.unsubscribe();
+    this.commandSubscription.unsubscribe();
+    this.openSubscription.unsubscribe();
+    this.closeSubscription.unsubscribe();
   }
 }
