@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BehaviorSubject } from 'rxjs';
 
 import { AppComponent } from './app.component';
@@ -8,7 +8,10 @@ import { ChatComponent } from './containers/chat/chat.component';
 import { ChatMessageComponent } from './components/message/message.component';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
   let connectedMock$: BehaviorSubject<boolean>;
+  let chatService: ChatService;
 
   beforeEach(async () => {
     connectedMock$ = new BehaviorSubject<boolean>(false);
@@ -25,21 +28,24 @@ describe('AppComponent', () => {
           provide: ChatService,
           useValue: {
             connected$: connectedMock$,
+            join: jest.fn(),
           },
         },
       ],
     }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+
+    chatService = TestBed.inject(ChatService);
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
   describe('connected', () => {
     it('should show message if not connected', () => {
-      const fixture = TestBed.createComponent(AppComponent);
       connectedMock$.next(false);
       fixture.detectChanges();
       const compiled = fixture.nativeElement as HTMLElement;
@@ -47,11 +53,36 @@ describe('AppComponent', () => {
     });
 
     it('should not show message if connected', () => {
-      const fixture = TestBed.createComponent(AppComponent);
       connectedMock$.next(true);
       fixture.detectChanges();
       const compiled = fixture.nativeElement as HTMLElement;
       expect(compiled.textContent).not.toContain('Connecting...');
+    });
+  });
+
+  describe('onJoinSubmit', () => {
+    it('should call join', () => {
+      jest.spyOn(component, 'join').mockImplementation();
+
+      component.onJoinSubmit('test-nickName');
+
+      expect(component.join).toHaveBeenCalledWith('test-nickName');
+    });
+  });
+
+  describe('join', () => {
+    it('should call join', async () => {
+      jest.spyOn(chatService, 'join').mockImplementation();
+
+      const joinPromise = component.join('test-nickName');
+
+      expect(component.joining).toBeTruthy();
+
+      await joinPromise;
+
+      expect(chatService.join).toHaveBeenCalledWith('test-nickName');
+
+      expect(component.joining).toBeFalsy();
     });
   });
 });
