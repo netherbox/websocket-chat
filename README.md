@@ -16,3 +16,4 @@ Basic websocket web chat
 
 * No participant join/leave messages
 * No participants list refresh
+* No check for user with the same nick name already joined
